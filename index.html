@@ -24,6 +24,16 @@
     </div>
 
     <div v-else>
+        <div v-if="role === 'Admin'" class="alert alert-info">
+            <h3>admin panel</h3>
+
+            <input v-model="newMusic" placeholder="Title" class="form-control mb-2">
+            <input v-model="newArtist" placeholder="Artist" class="form-control mb-2">
+            <input v-model.number="newDuration" placeholder="Duration" class="form-control mb-2">
+            <input v-model.number="newYear" placeholder="Year" class="form-control mb-2">
+
+            <button class="btn btn-warning" @click="addMusic">Add Music</button>
+        </div>
 
         <p>
             Logged in as <strong>{{ auth.username }}</strong> |
