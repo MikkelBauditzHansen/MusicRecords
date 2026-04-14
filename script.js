@@ -1,12 +1,19 @@
 const apiURL = "http://localhost:5151/api/music";
 const loginURL = "http://localhost:5151/api/auth/login";
 
+const loginURL = "http://localhost:5151/api/auth/login";
+
 const app = Vue.createApp({
     data() {
         return {
             music: [],
+            music: [],
             searchTitle: "",
             searchArtist: "",
+            auth: {
+                username: "",
+                password: ""
+            },
             auth: {
                 username: "",
                 password: ""
@@ -60,13 +67,26 @@ const app = Vue.createApp({
                 console.error("Error fetching music data:", error);
                 this.music = [];
             });
+            axios.get(apiURL, {
+                headers: this.getAuthHeaders()
+            })
+            .then(response => {
+                this.music = response.data;
+            })
+            .catch(error => {
+                console.error("Error fetching music data:", error);
+                this.music = [];
+            });
         },
+
 
         searchMusic() {
             axios.get(apiURL, {
                 params: {
                     title: this.searchTitle,
                     artist: this.searchArtist
+                },
+                headers: this.getAuthHeaders()
                 },
                 headers: this.getAuthHeaders()
             })
@@ -76,16 +96,31 @@ const app = Vue.createApp({
             .catch(error => {
                 console.error("Error searching music:", error);
                 this.music = [];
+            .then(response => {
+                this.music = response.data || [];
+            })
+            .catch(error => {
+                console.error("Error searching music:", error);
+                this.music = [];
             });
         },
+
 
         clearSearch() {
             this.searchTitle = "";
             this.searchArtist = "";
             this.loadMusic();
+            this.searchTitle = "";
+            this.searchArtist = "";
+            this.loadMusic();
         },
 
+
         login() {
+            axios.post(loginURL, this.auth)
+            .then(response => {
+                this.token = response.data.token;
+                this.role = response.data.role;
             axios.post(loginURL, this.auth)
             .then(response => {
                 this.token = response.data.token;
@@ -105,7 +140,23 @@ const app = Vue.createApp({
             this.auth.username = "";
             this.auth.password = "";
         }
+            })
+            .catch(error => {
+                console.error("Login failed:", error);
+                alert("Login failed");
+            });
+        },
+
+        logout() {
+            this.token = null;
+            this.role = null;
+            this.music = [];
+            this.auth.username = "";
+            this.auth.password = "";
+        }
     }
+});
+
 });
 
 app.mount("#app");
