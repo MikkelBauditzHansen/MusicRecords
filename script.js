@@ -24,7 +24,7 @@ const app = Vue.createApp({
     methods: {
         addMusic() {
             axios.post(apiURL, this.newMusic,{
-                headers: this.getAuthHeaders(),  "Content-Type": "application/json"
+                headers: this.getAuthHeaders()
                 })
             .then(response => {
                 this.music.push(response.data);
