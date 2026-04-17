@@ -44,7 +44,7 @@
                 <input v-model="newMusic.artist" type="text" placeholder="Artist" class="form-control mb-2">
                 <input v-model.number="newMusic.duration" type="number" placeholder="Duration" class="form-control mb-2">
                 <input v-model.number="newMusic.year" type="number" placeholder="Year" class="form-control mb-2">
-                <button class="btn btn-warning" @click="addMusic">Add Music</button>
+                <button id="btn_add" class="btn btn-warning" @click="addMusic">Add Music</button>
             </div>
 
             <div v-if="role === 'Admin' && editMusic.id !== null" class="card p-3 mb-4">
